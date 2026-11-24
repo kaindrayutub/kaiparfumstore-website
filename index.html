@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kai Parfum Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: maison parfum malam hari: tenang, mewah, tapi responsif saat disentuh.
+   IDEA: etalase butik; tiap botol berdiri di bawah lengkung kaca berlampu, kasir berupa laci yang meluncur.
+   PICTURE: foto asli produk dalam lengkung emas yang berganti (carousel) dan miring mengikuti kursor.
+   COLOUR and TYPE: hitam espresso, champagne logo #e9d4b4, emas #c6a15b; Cormorant Garamond + Jost.
+   LAYOUT: hero carousel, strip jaminan, koleksi + filter, laci checkout 3 langkah, halaman tarif JNE. */
+:root{color-scheme:dark;--bg:#0f0d0b;--bg2:#16120e;--card:#1c1712;--ink:#f4ece0;--soft:#b5a690;--line:#3a3127;--champ:#e9d4b4;--gold:#c6a15b;--gold2:#e2c287;--ease:cubic-bezier(.2,.7,.2,1)}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Jost,system-ui,sans-serif;overflow-x:clip}
+body.lock{overflow:hidden}
+h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;line-height:1.05;text-wrap:balance;margin:0}
+h2{font-size:clamp(32px,4.4vw,50px)}
+h1 em,h2 em{font-style:italic;color:var(--champ)}
+a{color:var(--gold2)}
+.band{padding:clamp(44px,6vw,100px) max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+.scroll{overflow-x:auto}html{scroll-padding-top:80px;scroll-behavior:smooth}
+.eyebrow{color:var(--gold);font-size:15px;margin-bottom:12px;display:block}
+.lead{color:var(--soft);max-width:36em;font-size:17px}
+.note{font-size:13px;color:var(--soft);margin:10px 0 0}
+:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
+/* nav */
+nav{position:sticky;top:0;z-index:20;background:#0f0d0bdd;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:26px;padding:10px max(5vw,16px)}
+nav .logo{margin-right:auto;display:flex}nav .logo img{height:42px;display:block}
+nav a.l{color:var(--ink);text-decoration:none;font-size:15px;opacity:.8;position:relative}
+nav a.l::after{content:"";position:absolute;left:0;right:100%;bottom:-4px;height:1px;background:var(--gold);transition:right .35s var(--ease)}
+nav a.l:hover{opacity:1}nav a.l:hover::after{right:0}
+.bag{position:relative;background:none;border:1px solid var(--gold);color:var(--champ);border-radius:99px;padding:9px 18px;font:500 15px Jost;cursor:pointer;min-height:44px}
+.bag b{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:99px;background:var(--gold);color:#1a140c;margin-left:6px;font-size:13px}
+.bag.pop b{animation:pop .45s var(--ease)}@keyframes pop{40%{transform:scale(1.5)}}
+/* buttons */
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 24px;border-radius:2px;font:500 15px Jost;text-decoration:none;cursor:pointer;border:1px solid transparent;transition:transform .2s,box-shadow .3s,background .3s}
+.btn.gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#1a140c}
+.btn.gold::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,#ffffff70 50%,transparent 70%);transform:translateX(-120%);transition:transform .7s}
+.btn.gold:hover::after{transform:translateX(120%)}
+.btn.gold:hover{box-shadow:0 10px 30px -10px #c6a15b99}
+.btn.line{border-color:var(--gold);color:var(--champ);background:none}.btn.line:hover{background:#c6a15b1a}
+.btn.dim{border-color:var(--line);color:var(--soft);background:none}
+.btn:active{transform:scale(.97)}.btn:disabled{opacity:.4;cursor:not-allowed}
+.icon{width:48px;padding:0;font-size:20px}
+/* hero */
+.hero{position:relative;background:radial-gradient(ellipse 60% 75% at 72% 45%,#3d2c19,transparent 70%),var(--bg);border-bottom:1px solid var(--line);overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:center}
+.hero h1{font-size:clamp(44px,6.2vw,78px)}
+.hero .now{margin-top:26px;padding-top:20px;border-top:1px solid var(--line);min-height:110px}
+.hero .now span{color:var(--gold);font-size:14px}
+.hero .now h3{font-size:clamp(28px,3.4vw,38px);transition:opacity .4s}
+.hero .now .pr{font-family:"Cormorant Garamond",serif;font-size:26px;color:var(--champ)}
+.ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.stage{perspective:1100px;justify-self:center;width:min(100%,430px)}
+.arch{position:relative;aspect-ratio:3/4;transform-style:preserve-3d;transition:transform .5s var(--ease)}
+.arch .frame{position:absolute;inset:0;border-radius:999px 999px 6px 6px;border:1px solid var(--gold);padding:14px}
+.arch .glass{position:relative;width:100%;height:100%;border-radius:999px 999px 2px 2px;overflow:hidden;background:#fff;box-shadow:0 40px 90px -25px #c6a15b66}
+.arch .glass img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .8s,transform 1.2s var(--ease)}
+.arch .glass img.on{opacity:1;transform:scale(1)}
+.arch .shine{position:absolute;inset:0;background:radial-gradient(circle at var(--mx,30%) var(--my,20%),#ffffff55,transparent 45%);mix-blend-mode:soft-light;pointer-events:none}
+.arch .plinth{position:absolute;left:-6%;right:-6%;bottom:-18px;height:18px;background:linear-gradient(180deg,#2c241b,#120f0c);border-top:1px solid var(--gold)}
+.dots{display:flex;gap:10px;justify-content:center;margin-top:40px}
+.dots button{width:52px;height:64px;padding:3px;border:1px solid var(--line);background:#fff;cursor:pointer;opacity:.5;transition:opacity .3s,border-color .3s,transform .3s}
+.dots button img{width:100%;height:100%;object-fit:cover}
+.dots button[aria-current=true]{opacity:1;border-color:var(--gold);transform:translateY(-4px)}
+#sparks{position:absolute;inset:0;pointer-events:none}
+/* trust */
+.trust{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--line)}
+.trust div{padding:22px 14px;border-right:1px solid var(--line);text-align:center;font-size:15px;color:var(--soft)}
+.trust div:last-child{border-right:0}
+.trust b{display:block;color:var(--champ);font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:600}
+/* collection */
+.bar{display:flex;gap:14px;align-items:end;justify-content:space-between;flex-wrap:wrap;margin-top:30px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chips button{min-height:44px;padding:8px 16px;border:1px solid var(--line);background:none;color:var(--soft);font:14px Jost;cursor:pointer;border-radius:99px;transition:all .25s}
+.chips button[aria-pressed=true]{border-color:var(--gold);color:#1a140c;background:var(--gold2)}
+.bar select{width:auto;min-width:200px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px;margin-top:26px}
+.card{background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column;transition:border-color .3s,transform .4s var(--ease),box-shadow .4s}
+.card:hover{border-color:var(--gold);transform:translateY(-6px);box-shadow:0 24px 50px -24px #000}
+.card .ph{position:relative;background:#fff;aspect-ratio:3/4;overflow:hidden;cursor:zoom-in;border:0;padding:0;display:block;width:100%}
+.card .ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s var(--ease)}
+.card:hover .ph img{transform:scale(1.06)}
+.card.out .ph img{filter:grayscale(.6) opacity(.75)}
+.card .qv{position:absolute;left:50%;bottom:14px;transform:translate(-50%,10px);opacity:0;transition:all .35s var(--ease);background:#0f0d0bdd;color:var(--champ);padding:8px 16px;font-size:13px;white-space:nowrap;border:1px solid var(--gold)}
+.card:hover .qv,.card .ph:focus-visible .qv{opacity:1;transform:translate(-50%,0)}
+.st{position:absolute;left:12px;top:12px;font-size:13px;padding:4px 10px;background:var(--bg);color:var(--champ);border:1px solid var(--gold)}
+.card.out .st{color:var(--soft);border-color:var(--line)}
+.mood{position:absolute;right:12px;top:12px;font-size:12px;padding:4px 10px;background:#ffffffe0;color:#2a2118}
+.card .b{padding:18px;display:flex;flex-direction:column;gap:4px;flex:1}
+.card .br{color:var(--gold);font-size:13px}
+.card h3{font-size:24px;font-weight:600}
+.card .ty{color:var(--soft);font-size:14px}
+.card .pr{font-family:"Cormorant Garamond",serif;font-size:27px;color:var(--champ);margin-top:4px;white-space:nowrap}
+.card .act{margin-top:auto;padding-top:12px;display:grid;grid-template-columns:minmax(0,1fr) 48px;gap:8px}
+.card .act .btn{min-height:46px;padding:10px 12px}
+.card .shp{font-size:13px;color:var(--soft);margin-top:10px;text-decoration:none}.card .shp:hover{color:var(--champ)}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+/* overlays */
+.scrim{position:fixed;inset:0;background:#000000a8;backdrop-filter:blur(3px);z-index:40;opacity:0;pointer-events:none;transition:opacity .35s}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,100%);background:var(--bg2);border-left:1px solid var(--gold);z-index:50;transform:translateX(100%);transition:transform .5s var(--ease);display:flex;flex-direction:column}
+.drawer.on{transform:none}
+.dh{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.dh h3{font-size:28px;margin-right:auto}
+.x{width:44px;height:44px;border:1px solid var(--line);background:none;color:var(--ink);font-size:20px;cursor:pointer}
+.steps3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:0 22px;border-bottom:1px solid var(--line)}
+.steps3 span{padding:12px 0;font-size:13px;color:var(--soft);border-bottom:2px solid transparent;text-align:center}
+.steps3 span.on{color:var(--champ);border-color:var(--gold)}
+.steps3 span.ok{color:var(--gold)}
+.db{flex:1;overflow:auto;padding:6px 22px 22px}
+.df{border-top:1px solid var(--line);padding:16px 22px;background:var(--card)}
+.df .row.tot{border:0;margin:0;padding:0 0 10px}
+.it{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.it img{width:64px;height:84px;object-fit:cover;background:#fff}
+.it .n{font-weight:500;line-height:1.3}.it .p{color:var(--soft);font-size:14px}
+.pre{display:inline-block;font-size:12px;color:var(--gold2);border:1px solid var(--gold);padding:1px 8px;margin-top:4px}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line);margin-top:6px}
+.qty button{width:38px;height:38px;border:0;background:none;color:var(--ink);font-size:17px;cursor:pointer}
+.qty span{min-width:26px;text-align:center}
+.sum{font-family:"Cormorant Garamond",serif;font-size:21px;color:var(--champ);white-space:nowrap}
+.empty{color:var(--soft);padding:30px 0;text-align:center}
+.f2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 14px}.full{grid-column:1/-1}
+label{display:block;font-size:14px;color:var(--soft);margin:14px 0 6px}label i{color:var(--gold);font-style:normal}
+input,select,textarea{width:100%;font:16px Jost;padding:12px 14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);min-height:48px;border-radius:0}
+textarea{min-height:80px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);outline:none}
+.ship{margin-top:22px;border:1px solid var(--gold);padding:18px 16px 12px;position:relative}
+.ship .t{position:absolute;top:-11px;left:12px;background:var(--bg2);padding:0 8px;font-size:13px;color:var(--gold)}
+.row{display:flex;justify-content:space-between;gap:12px;padding:4px 0;color:var(--soft)}
+.row b{color:var(--ink);font-weight:500;white-space:nowrap}
+.row.tot{color:var(--ink);align-items:baseline}
+.row.tot b{font-family:"Cormorant Garamond",serif;font-size:clamp(28px,4vw,36px);color:var(--champ)}
+.err{color:#f0a08c;font-size:14px;min-height:20px}
+.ac{position:relative}
+.sug{position:absolute;left:0;right:0;top:100%;z-index:6;background:var(--card);border:1px solid var(--gold);border-top:0;max-height:260px;overflow:auto}
+.sug:empty{display:none}
+.sug button{display:block;width:100%;text-align:left;padding:11px 14px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--ink);font:15px Jost;cursor:pointer;min-height:44px}
+.sug button:hover,.sug button:focus{background:#c6a15b1f;outline:none}
+.sug p{margin:0;padding:12px 14px;color:var(--soft);font-size:14px}
+.qris{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:20px;align-items:center;margin:16px 0}
+.qbox{background:#fff;padding:12px;position:relative;color:#111;text-align:center}
+.qbox .qh{display:flex;justify-content:space-between;font:600 13px Jost;margin-bottom:8px}
+.qbox .qh span:first-child{background:#111;color:#fff;padding:2px 8px;letter-spacing:.08em}
+.qbox svg{width:100%;height:auto;display:block}
+.qbox .ribbon{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%) rotate(-14deg);background:#c0392bee;color:#fff;font:600 15px Jost;padding:6px 16px;letter-spacing:.12em;white-space:nowrap}
+.qbox small{display:block;font-size:12px;color:#555;margin-top:6px}
+.amt{font-family:"Cormorant Garamond",serif;font-size:clamp(34px,5vw,44px);color:var(--champ);line-height:1}
+.timer{font-variant-numeric:tabular-nums;color:var(--gold2)}
+pre.ord{white-space:pre-wrap;font:13px/1.55 Jost;color:var(--soft);background:var(--bg);padding:12px;border:1px solid var(--line);margin:12px 0;max-height:180px;overflow:auto}
+.btns{display:flex;gap:10px;flex-wrap:wrap}.btns .btn{flex:1 1 180px}
+.modal{position:fixed;left:50%;top:50%;z-index:50;width:min(920px,calc(100% - 24px));max-height:calc(100% - 24px);overflow:auto;background:var(--bg2);border:1px solid var(--gold);transform:translate(-50%,-46%) scale(.97);opacity:0;pointer-events:none;transition:all .4s var(--ease);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.modal.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
+.modal .mi{background:#fff;min-height:320px}.modal .mi img{width:100%;height:100%;object-fit:cover;display:block}
+.modal .mb{padding:clamp(20px,3vw,34px);position:relative;display:flex;flex-direction:column;gap:8px}
+.modal .x{position:absolute;right:14px;top:14px}
+.modal h3{font-size:clamp(32px,4vw,42px);padding-right:50px}
+.modal .pr{font-family:"Cormorant Garamond",serif;font-size:34px;color:var(--champ)}
+.modal ul{margin:6px 0;padding-left:18px;color:var(--soft)}
+.toast{position:fixed;left:50%;bottom:24px;z-index:60;transform:translate(-50%,30px);opacity:0;background:var(--card);border:1px solid var(--gold);color:var(--champ);padding:12px 18px;transition:all .4s var(--ease);display:flex;gap:14px;align-items:center;max-width:calc(100% - 24px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.toast button{background:none;border:0;color:var(--gold2);font:500 14px Jost;cursor:pointer;text-decoration:underline;min-height:36px}
+/* tarif page */
+.ongkirCta{background:radial-gradient(ellipse 50% 90% at 90% 50%,#3a2b1a,transparent 70%),var(--bg);border-top:1px solid var(--line)}
+.ongkirCta .wrap{display:flex;gap:28px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.tHero{background:radial-gradient(ellipse 55% 80% at 85% 30%,#3a2b1a,transparent 70%),var(--bg)}
+.tHero h1{font-size:clamp(42px,6vw,72px);margin-bottom:14px}
+.back{display:inline-flex;align-items:center;min-height:44px;color:var(--champ);text-decoration:none;margin-bottom:18px}
+.tStats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);margin-top:30px}
+.tStats div{padding:18px;border-right:1px solid var(--line);color:var(--soft);font-size:14px}.tStats div:last-child{border-right:0}
+.tStats b{display:block;font-family:"Cormorant Garamond",serif;font-size:clamp(26px,3.4vw,36px);color:var(--champ);font-weight:500;white-space:nowrap}
+.liveCheck{border:1px solid var(--gold);padding:clamp(18px,3vw,28px);margin:6px 0 24px;display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1.2fr);gap:16px;align-items:end;background:#c6a15b0a}
+.liveCheck .res{font-family:"Cormorant Garamond",serif;font-size:clamp(28px,4vw,38px);color:var(--champ);line-height:1.1}
+.liveCheck .res small{display:block;font:14px Jost;color:var(--soft)}
+.tTools{display:flex;gap:18px;flex-wrap:wrap;align-items:end}
+.tInfo{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px;margin:40px 0 30px}
+.tInfo div,.how div{border-top:1px solid var(--gold);padding-top:14px;color:var(--soft);font-size:15px}
+.tInfo b,.how b{display:block;color:var(--champ);font-family:"Cormorant Garamond",serif;font-size:23px;font-weight:500}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:26px;margin-top:32px}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left}
+th{font-size:13px;color:var(--gold);font-weight:500}td.n,th.n{text-align:right;white-space:nowrap}
+tr.cheap td:nth-child(3){color:var(--gold2)}
+footer{border-top:1px solid var(--line);color:var(--soft);font-size:14px}
+footer .wrap{display:flex;gap:24px;align-items:center;justify-content:space-between;flex-wrap:wrap}footer img{height:54px}
+@media(max-width:860px){.modal{grid-template-columns:minmax(0,1fr)}.modal .mi{max-height:46vh}.liveCheck{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:700px){.hero .wrap{grid-template-columns:minmax(0,1fr)}.stage{width:min(80%,340px);order:-1}.trust{grid-template-columns:repeat(2,minmax(0,1fr))}.trust div:nth-child(2){border-right:0}.trust div:nth-child(-n+2){border-bottom:1px solid var(--line)}nav a.l{display:none}}
+@media(max-width:600px){.f2{grid-template-columns:minmax(0,1fr)}.qris{grid-template-columns:minmax(0,1fr)}.qbox{max-width:220px;margin:0 auto}.tStats{grid-template-columns:minmax(0,1fr)}.tStats div{border-right:0;border-bottom:1px solid var(--line)}table{font-size:13px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="#top" aria-label="Kai Parfum Store"><img src="img/logo-light.png" alt="Kai Parfum, Authentic Parfume Store"></a>
+  <a class="l" href="#koleksi">Koleksi</a><a class="l" href="#cara">Cara pesan</a><a class="l" href="#tarif-jne">Tarif JNE</a>
+  <button class="bag" id="bagBtn" type="button">Tas <b id="cnt">0</b></button>
+</div></nav>
+
+<main id="home">
+<header class="hero band" id="top"><canvas id="sparks" aria-hidden="true"></canvas><div class="wrap">
+  <div>
+    <span class="eyebrow">Authentic Parfume Store · Surabaya</span>
+    <h1>Wangi yang <em>otentik</em>, dikemas untukmu</h1>
+    <p class="lead">Fragrance World dan Khadlaj 100ml, original BNIB dan tersegel. Pilih, bayar, dan kami kirim lewat JNE ke seluruh Indonesia.</p>
+    <div class="now" aria-live="polite"><span id="hBrand"></span><h3 id="hName"></h3><span class="pr" id="hPrice"></span></div>
+    <div class="ctas"><button class="btn gold" type="button" id="hBuy">Beli sekarang</button><button class="btn line" type="button" id="hView">Lihat detail</button></div>
+  </div>
+  <div class="stage" id="stage">
+    <div class="arch" id="arch"><div class="frame"><div class="glass" id="glass"><div class="shine"></div></div></div><div class="plinth"></div></div>
+    <div class="dots" id="dots" role="tablist" aria-label="Pilih parfum"></div>
+  </div>
+</div></header>
+
+<section class="trust">
+  <div><b>100% Original</b>Bersertifikat BPOM</div><div><b>BNIB</b>Baru, tersegel rapi</div>
+  <div><b>★ 5.0</b>Rating di Shopee</div><div><b>JNE REG</b>Ke seluruh Indonesia</div>
+</section>
+
+<section class="band" id="koleksi"><div class="wrap">
+  <span class="eyebrow">Koleksi</span>
+  <h2>Pilih <em>signature</em> scent-mu</h2>
+  <div class="bar">
+    <div class="chips" id="filters" role="group" aria-label="Filter koleksi"></div>
+    <select id="sort" aria-label="Urutkan"><option value="pop">Urutkan: pilihan toko</option><option value="lo">Harga terendah</option><option value="hi">Harga tertinggi</option></select>
+  </div>
+  <div class="grid" id="grid"></div>
+</div></section>
+
+<section class="band ongkirCta" id="ongkir"><div class="wrap">
+  <div><span class="eyebrow">Ongkir JNE Regular</span><h2>Mulai <em>Rp9.000</em>/kg ke seluruh Indonesia</h2><p class="lead">Ongkir dihitung otomatis saat checkout. Lihat tarif acuan ke kota-kota besar.</p></div>
+  <a class="btn gold" href="#tarif-jne">Lihat tarif JNE Regular →</a>
+</div></section>
+
+<section class="band" id="cara" style="background:var(--bg2);border-top:1px solid var(--line)"><div class="wrap">
+  <span class="eyebrow">Cara pesan</span>
+  <h2>Empat langkah, <em>tanpa ribet</em></h2>
+  <div class="how">
+    <div class="reveal"><b>Pilih parfum</b>Tekan "Beli sekarang" atau masukkan beberapa parfum ke tas.</div>
+    <div class="reveal"><b>Isi alamat</b>Ongkir JNE REG dan total bayar langsung muncul.</div>
+    <div class="reveal"><b>Bayar QRIS</b>Scan dari e-wallet atau m-banking apa pun.</div>
+    <div class="reveal"><b>Terima resi</b>Kirim bukti bayar via WhatsApp, kami kirim resi JNE.</div>
+  </div>
+</div></section>
+</main>
+
+<main id="tarifPage" hidden>
+<header class="band tHero"><div class="wrap">
+  <a class="back" href="#koleksi">← Kembali ke toko</a>
+  <span class="eyebrow">JNE Regular (REG) · dari Surabaya</span>
+  <h1>Tarif ongkir <em>JNE Regular</em></h1>
+  <p class="lead">Tarif per 1 kg dari Surabaya, dicek langsung di jne.co.id pada 23 November 2026. Tarif dapat berubah sewaktu-waktu.</p>
+  <div class="tStats" id="tStats"></div>
+</div></header>
+<section class="band" style="padding-top:0"><div class="wrap">
+  <div class="liveCheck" id="liveCheck" hidden>
+    <div><label for="lcQ">Cek ongkir ke alamat mana pun</label><div class="ac"><input id="lcQ" autocomplete="off" placeholder="Kecamatan, kota, atau kode pos"><div class="sug" id="lcSug" role="listbox"></div></div></div>
+    <div><label for="lcN">Jumlah botol</label><select id="lcN"><option value="1">1 botol</option><option value="2">2 botol</option><option value="3">3 botol</option><option value="4">4 botol</option><option value="5">5 botol</option></select></div>
+    <div class="res" id="lcRes" aria-live="polite"><small>JNE REG dari Surabaya</small>–</div>
+  </div>
+  <div class="tTools">
+    <div style="flex:1 1 260px"><label for="q">Cari kota</label><input id="q" placeholder="Contoh: Bandung"></div>
+    <div class="chips" id="rchips" role="group" aria-label="Filter wilayah" style="flex:2 1 400px"></div>
+  </div>
+  <div class="scroll" style="margin-top:18px"><table><thead><tr><th>Kota</th><th>Wilayah</th><th class="n">Tarif/kg</th><th class="n">Estimasi</th><th class="n">3 botol (2 kg)</th></tr></thead><tbody id="tb"></tbody></table></div>
+  <div class="tInfo">
+    <div><b>Cara dihitung</b>Ongkir = tarif per kg × berat ditagih. 1 botol + kemasan ±0,6 kg menjadi 1 kg; 3 botol ±1,4 kg menjadi 2 kg.</div>
+    <div><b>Berat volumetrik</b>JNE memakai yang lebih besar antara berat timbangan dan (P × L × T) ÷ 6.000. Paket kami dikemas ringkas.</div>
+    <div><b>Kota tidak ada?</b>Tetap bisa pesan, ongkir kami konfirmasi lewat WhatsApp, atau cek di <a href="https://www.jne.co.id/shipping-fee" target="_blank" rel="noopener">jne.co.id</a>.</div>
+  </div>
+  <div class="ctas"><a class="btn gold" href="#koleksi">Belanja sekarang</a></div>
+</div></section>
+</main>
+
+<footer class="band"><div class="wrap">
+  <img src="img/logo-light.png" alt="Kai Parfum">
+  <span>Kai Parfum Store · Surabaya · WhatsApp 0821-3174-3765 · Juga di <a href="https://shopee.co.id/kai_parfum_store" target="_blank" rel="noopener">Shopee</a></span>
+</div></footer>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="modal" id="qv" role="dialog" aria-modal="true" aria-labelledby="qvName">
+  <div class="mi"><img id="qvImg" alt=""></div>
+  <div class="mb">
+    <button class="x" type="button" data-close aria-label="Tutup">×</button>
+    <span class="eyebrow" id="qvBrand" style="margin:0"></span>
+    <h3 id="qvName"></h3>
+    <span class="note" id="qvType" style="margin:0"></span>
+    <span class="pr" id="qvPrice"></span>
+    <ul id="qvList"></ul>
+    <div class="qty" style="align-self:flex-start"><button type="button" id="qvDec" aria-label="Kurangi">−</button><span id="qvQty">1</span><button type="button" id="qvInc" aria-label="Tambah">+</button></div>
+    <div class="btns" style="margin-top:12px"><button class="btn gold" type="button" id="qvBuy">Beli sekarang</button><button class="btn line" type="button" id="qvAdd">+ Masukkan tas</button></div>
+    <a class="note" id="qvShopee" target="_blank" rel="noopener">Lihat juga di Shopee</a>
+  </div>
+</div>
+
+<aside class="drawer" id="co" role="dialog" aria-modal="true" aria-labelledby="coTitle">
+  <div class="dh"><h3 id="coTitle">Tas belanja</h3><button class="x" type="button" data-close aria-label="Tutup">×</button></div>
+  <div class="steps3" id="coSteps"><span>1 · Pesanan</span><span>2 · Pengiriman</span><span>3 · Pembayaran</span></div>
+  <div class="db">
+    <section id="s1"><div id="coItems"></div></section>
+    <section id="s2" hidden>
+      <div class="f2">
+        <div><label for="nama">Nama penerima <i>*</i></label><input id="nama" autocomplete="name"></div>
+        <div><label for="hp">No. HP / WhatsApp <i>*</i></label><input id="hp" inputmode="tel" autocomplete="tel" placeholder="08xxxxxxxxxx"></div>
+        <div class="full"><label for="alamat">Alamat lengkap <i>*</i></label><textarea id="alamat" placeholder="Jalan, nomor rumah, RT/RW, kelurahan, kecamatan"></textarea></div>
+        <div class="full"><label for="destQ">Kota / kecamatan tujuan <i>*</i></label>
+          <div class="ac" id="liveBox" hidden><input id="destQ" autocomplete="off" placeholder="Ketik kecamatan, kota, atau kode pos"><div class="sug" id="sug" role="listbox"></div></div>
+          <select id="dest" aria-label="Kota tujuan"></select></div>
+        <div><label for="pos">Kode pos</label><input id="pos" inputmode="numeric" maxlength="5"></div>
+        <div><label for="cat">Catatan</label><input id="cat" placeholder="Opsional"></div>
+      </div>
+      <div class="ship">
+        <span class="t">JNE Regular (REG) · dari Surabaya</span>
+        <div class="row"><span>Berat ± / ditagih</span><b id="w">–</b></div>
+        <div class="row"><span>Estimasi tiba</span><b id="etd">–</b></div>
+        <div class="row"><span>Subtotal produk</span><b id="sub">–</b></div>
+        <div class="row"><span>Ongkos kirim</span><b id="ship">–</b></div>
+      </div>
+      <p class="note" id="other" hidden>Tujuan ini belum ada tarifnya. Pesanan tetap bisa dibuat; ongkir kami konfirmasi lewat WhatsApp.</p>
+      <p class="note">Berat dihitung ±0,4 kg per botol + 0,2 kg kemasan, dibulatkan ke atas per kg. Ongkir final mengikuti timbangan JNE.</p>
+    </section>
+    <section id="s3" hidden></section>
+  </div>
+  <div class="df" id="coFoot">
+    <div class="row tot"><span>Total</span><b id="tot">Rp0</b></div>
+    <div class="err" id="err" role="alert"></div>
+    <div class="btns"><button class="btn dim" type="button" id="coBack" hidden>Kembali</button><button class="btn gold" type="button" id="coNext">Lanjut ke pengiriman</button></div>
+  </div>
+</aside>
+
+<div class="toast" id="toast" role="status"><span id="toastT"></span><button type="button" id="toastBtn">Lihat tas</button></div>
+
+<script>
+{
+const WA_NUMBER = "6282131743765"; // 0821-3174-3765
+const PAY_WINDOW_MIN = 15, KG_PER_BOTTLE = 0.4, PACK_KG = 0.2;
+
+const P = [
+ {id:1,name:"Proud Of You Intense",brand:"Fragrance World",type:"Eau de Parfum · 100ml · BNIB",price:325000,stock:true,mood:"Malam",img:"img/p1.jpg",url:"https://shopee.co.id/FRAG-WORLD-Proud-Of-You-Intense-EDP-100ml-BNIB-i.310942577.54509802310"},
+ {id:2,name:"Jacques Yves Imaginari",brand:"Fragrance World",type:"Eau de Parfum · 100ml",price:375000,stock:false,mood:"Serbaguna",img:"img/p2.jpg",url:"https://shopee.co.id/Fragrance-World-Jacques-Yves-Imaginary-100ml-Eau-De-Parfum-i.310942577.50165637024"},
+ {id:3,name:"Island Dreams",brand:"Khadlaj",type:"Extrait de Parfum · 100ml · BNIB",price:435000,stock:false,mood:"Serbaguna",img:"img/p3.jpg",url:"https://shopee.co.id/Khadlaj-Island-Dreams-100ml-BNIB-Extrait-De-Parfum-i.310942577.49811367054"},
+ {id:4,name:"Shiyaaka Snow",brand:"Khadlaj",type:"Eau de Parfum · 100ml",price:380000,stock:false,mood:"Serbaguna",img:"img/p4.jpg",url:"https://shopee.co.id/Khadlaj-Ziyaka-Snow-100ml-Eau-De-Parfum-i.310942577.48061758479"},
+ {id:5,name:"One Self OG",brand:"Fragrance World",type:"Eau de Parfum · 100ml · BNIB",price:344000,stock:false,mood:"Serbaguna",img:"img/p5.jpg",url:"https://shopee.co.id/FRAG-WORLD-One-Self-og-100ml-BNIB-i.310942577.45959832556"}
+];
+
+const R = [
+ ["Sidoarjo","Jawa Timur",9000,"2–3"],["Bangkalan","Jawa Timur",9000,"2–3"],["Mojokerto","Jawa Timur",9000,"1–2"],["Pasuruan","Jawa Timur",9000,"1–2"],["Probolinggo","Jawa Timur",9000,"1–2"],["Kediri","Jawa Timur",9000,"1–2"],["Jember","Jawa Timur",9000,"1–2"],
+ ["Jakarta","Jabodetabek",17000,"1–2"],["Bogor","Jabodetabek",19000,"1–2"],["Depok","Jabodetabek",19000,"1–2"],["Tangerang","Jabodetabek",19000,"1–2"],["Bekasi","Jabodetabek",19000,"1–2"],
+ ["Bandung","Jawa Barat",21000,"1–2"],["Semarang","Jawa Tengah & DIY",16000,"1–2"],["Solo","Jawa Tengah & DIY",16000,"1–2"],["Yogyakarta","Jawa Tengah & DIY",16000,"1–2"],
+ ["Denpasar","Bali & Nusa Tenggara",21000,"2–3"],["Mataram","Bali & Nusa Tenggara",23000,"2–3"],["Kupang","Bali & Nusa Tenggara",87000,"2–3"],
+ ["Bandar Lampung","Sumatra",40000,"2–3"],["Batam","Sumatra",43000,"3–4"],["Palembang","Sumatra",50000,"2–3"],["Jambi","Sumatra",52000,"2–3"],["Pangkal Pinang","Sumatra",53000,"2–3"],["Medan","Sumatra",57000,"3–4"],["Bengkulu","Sumatra",59000,"2–3"],["Padang","Sumatra",60000,"3–4"],["Pekanbaru","Sumatra",62000,"3–4"],["Tanjung Pinang","Sumatra",70000,"4–5"],["Banda Aceh","Sumatra",75000,"4–5"],
+ ["Banjarmasin","Kalimantan",38000,"2–3"],["Palangkaraya","Kalimantan",43000,"2–3"],["Balikpapan","Kalimantan",50000,"2–3"],["Pontianak","Kalimantan",53000,"2–3"],["Samarinda","Kalimantan",54000,"2–3"],
+ ["Makassar","Sulawesi",52000,"2–3"],["Palu","Sulawesi",71000,"2–4"],["Kendari","Sulawesi",84000,"2–4"],["Gorontalo","Sulawesi",91000,"2–4"],["Manado","Sulawesi",94000,"2–4"],
+ ["Ambon","Maluku & Papua",95000,"2–3"],["Ternate","Maluku & Papua",98000,"2–3"],["Jayapura","Maluku & Papua",156000,"3–5"],["Merauke","Maluku & Papua",167000,"5–9"],["Sorong","Maluku & Papua",188000,"3–5"]
+];
+
+const $ = id => document.getElementById(id);
+const rp = n => "Rp" + Math.round(n).toLocaleString("id-ID");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const byId = id => P.find(p => p.id === +id);
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const cart = {};
+
+/* ---------- toast ---------- */
+let toastT;
+function toast(msg, withBtn){ $("toastT").textContent = msg; $("toastBtn").hidden = !withBtn; $("toast").classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => $("toast").classList.remove("on"), 2600); }
+$("toastBtn").addEventListener("click", () => openCheckout("cart"));
+function addToCart(id, q = 1){ cart[id] = (cart[id] || 0) + q; refreshBag(); const b = $("bagBtn"); b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop"); toast(`${byId(id).name} masuk ke tas`, true); }
+function refreshBag(){ $("cnt").textContent = Object.values(cart).reduce((a,b) => a+b, 0); }
+
+/* ---------- hero carousel ---------- */
+let hi = 0, hTimer;
+$("glass").insertAdjacentHTML("afterbegin", P.map((p,i) => `<img src="${p.img}" alt="${esc(p.brand+" "+p.name)}" class="${i?"":"on"}">`).join(""));
+$("dots").innerHTML = P.map((p,i) => `<button type="button" role="tab" aria-label="${esc(p.name)}" aria-current="${!i}" data-h="${i}"><img src="${p.img}" alt=""></button>`).join("");
+function showHero(i){
+  hi = (i + P.length) % P.length; const p = P[hi];
+  $("glass").querySelectorAll("img").forEach((im,k) => im.classList.toggle("on", k === hi));
+  $("dots").querySelectorAll("button").forEach((b,k) => b.setAttribute("aria-current", k === hi));
+  $("hBrand").textContent = p.brand + (p.stock ? " · Tersedia" : " · Pre-order");
+  $("hName").textContent = p.name; $("hPrice").textContent = rp(p.price);
+  $("hBuy").textContent = p.stock ? "Beli sekarang" : "Pre-order sekarang";
+}
+function autoHero(){ clearInterval(hTimer); if (!reduce) hTimer = setInterval(() => showHero(hi + 1), 5000); }
+$("dots").addEventListener("click", e => { const b = e.target.closest("[data-h]"); if (b) { showHero(+b.dataset.h); autoHero(); } });
+$("hBuy").addEventListener("click", () => buyNow(P[hi].id, 1));
+$("hView").addEventListener("click", () => openQV(P[hi].id));
+const stage = $("stage"), arch = $("arch");
+stage.addEventListener("pointermove", e => { if (reduce) return; const r = arch.getBoundingClientRect(), x = (e.clientX - r.left)/r.width, y = (e.clientY - r.top)/r.height;
+  arch.style.transform = `rotateY(${(x-.5)*14}deg) rotateX(${(.5-y)*10}deg)`; arch.style.setProperty("--mx", x*100+"%"); arch.style.setProperty("--my", y*100+"%"); });
+stage.addEventListener("pointerleave", () => arch.style.transform = "");
+stage.addEventListener("pointerenter", () => clearInterval(hTimer));
+stage.addEventListener("pointerleave", autoHero);
+showHero(0); autoHero();
+
+/* gold dust */
+(() => { const c = $("sparks"); if (reduce || !c.getContext) return; const g = c.getContext("2d"); let W, H, dots = [];
+  const size = () => { W = c.width = c.offsetWidth; H = c.height = c.offsetHeight; dots = Array.from({length: Math.round(W/22)}, () => ({x: Math.random()*W, y: Math.random()*H, r: Math.random()*1.6+.3, v: Math.random()*.25+.05, a: Math.random()})); };
+  const ro = new ResizeObserver(size); ro.observe(c);
+  const tick = () => { g.clearRect(0,0,W,H); for (const d of dots) { d.y -= d.v; d.a += .01; if (d.y < -4) { d.y = H + 4; d.x = Math.random()*W; } g.globalAlpha = .25 + .35*Math.abs(Math.sin(d.a)); g.fillStyle = "#e2c287"; g.beginPath(); g.arc(d.x, d.y, d.r, 0, 7); g.fill(); } requestAnimationFrame(tick); };
+  tick(); })();
+
+/* ---------- collection ---------- */
+let filter = "Semua";
+const FILTERS = ["Semua", "Tersedia", "Fragrance World", "Khadlaj"];
+$("filters").innerHTML = FILTERS.map(f => `<button type="button" data-f="${f}" aria-pressed="${f===filter}">${f}</button>`).join("");
+$("filters").addEventListener("click", e => { const b = e.target.closest("[data-f]"); if (!b) return; filter = b.dataset.f;
+  $("filters").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); renderGrid(); });
+$("sort").addEventListener("change", renderGrid);
+function renderGrid(){
+  let list = P.filter(p => filter === "Semua" || (filter === "Tersedia" ? p.stock : p.brand === filter));
+  const s = $("sort").value;
+  if (s === "lo") list = [...list].sort((a,b) => a.price - b.price);
+  if (s === "hi") list = [...list].sort((a,b) => b.price - a.price);
+  $("grid").innerHTML = list.map(p => `<article class="card reveal ${p.stock?"":"out"}">
+    <button class="ph" type="button" data-qv="${p.id}" aria-label="Lihat detail ${esc(p.name)}"><img src="${p.img}" alt="${esc(p.brand+" "+p.name)}" loading="lazy">
+      <span class="st">${p.stock?"Tersedia":"Pre-order"}</span><span class="mood">${p.mood}</span><span class="qv">Lihat detail</span></button>
+    <div class="b"><span class="br">${p.brand}</span><h3>${p.name}</h3><span class="ty">${p.type}</span><span class="pr">${rp(p.price)}</span>
+      <div class="act"><button class="btn gold" type="button" data-buy="${p.id}">${p.stock?"Beli sekarang":"Pre-order"}</button>
+      <button class="btn line icon" type="button" data-add="${p.id}" aria-label="Masukkan ${esc(p.name)} ke tas" title="Masukkan ke tas">+</button></div>
+      <a class="shp" href="${p.url}" target="_blank" rel="noopener">Lihat di Shopee ↗</a></div></article>`).join("") || `<p class="empty">Tidak ada parfum untuk filter ini.</p>`;
+  observeReveal();
+}
+const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), {threshold: .12}) : null;
+function observeReveal(){ document.querySelectorAll(".reveal:not(.in)").forEach((el,i) => { el.style.transitionDelay = (i%4)*80 + "ms"; io ? io.observe(el) : el.classList.add("in"); }); }
+
+/* ---------- overlays ---------- */
+let openEl = null, lastFocus = null;
+function openLayer(el){ closeLayer(); lastFocus = document.activeElement; openEl = el; el.classList.add("on"); $("scrim").classList.add("on"); document.body.classList.add("lock"); setTimeout(() => el.querySelector("[data-close]").focus(), 60); }
+function closeLayer(){ if (!openEl) return; openEl.classList.remove("on"); $("scrim").classList.remove("on"); document.body.classList.remove("lock"); openEl = null; clearInterval(timerId); if (lastFocus) lastFocus.focus(); }
+$("scrim").addEventListener("click", closeLayer);
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeLayer(); });
+document.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click", closeLayer));
+
+let qvId = 1, qvQty = 1;
+function openQV(id){ const p = byId(id); qvId = p.id; qvQty = 1;
+  $("qvImg").src = p.img; $("qvImg").alt = p.brand + " " + p.name; $("qvBrand").textContent = p.brand; $("qvName").textContent = p.name;
+  $("qvType").textContent = p.type; $("qvPrice").textContent = rp(p.price); $("qvQty").textContent = 1; $("qvShopee").href = p.url;
+  $("qvList").innerHTML = `<li>100% original &amp; BPOM, segel pabrik</li><li>Cocok dipakai: ${p.mood.toLowerCase()}</li><li>${p.stock ? "Stok tersedia, dikirim dari Surabaya" : "Stok sedang habis: pesan sebagai pre-order, kami konfirmasi ketersediaan sebelum kamu bayar"}</li>`;
+  $("qvBuy").textContent = p.stock ? "Beli sekarang" : "Pre-order sekarang";
+  openLayer($("qv")); }
+$("qvInc").addEventListener("click", () => $("qvQty").textContent = ++qvQty);
+$("qvDec").addEventListener("click", () => $("qvQty").textContent = qvQty = Math.max(1, qvQty - 1));
+$("qvBuy").addEventListener("click", () => buyNow(qvId, qvQty));
+$("qvAdd").addEventListener("click", () => { addToCart(qvId, qvQty); closeLayer(); });
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-buy],[data-add],[data-qv]"); if (!t) return;
+  if (t.dataset.buy) buyNow(+t.dataset.buy, 1);
+  else if (t.dataset.add) addToCart(+t.dataset.add);
+  else openQV(+t.dataset.qv);
+});
+$("bagBtn").addEventListener("click", () => openCheckout("cart"));
+
+/* ---------- ongkir: live (RajaOngkir via /api) atau tabel tetap ---------- */
+let LIVE = false;
+const live = {dest: null, cost: null, etd: "", key: "", err: false};
+async function api(path, opt){ const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 9000);
+  try { const r = await fetch("/api/" + path, {...opt, signal: ctl.signal}); if (!r.ok) throw new Error(r.status); return await r.json(); } finally { clearTimeout(t); } }
+const costCache = {};
+function fetchCost(id, kg){ const k = id + "|" + kg;
+  if (!costCache[k]) costCache[k] = api("cost", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({destination: id, weight: kg*1000})}).catch(e => { delete costCache[k]; throw e; });
+  return costCache[k]; }
+async function getCost(id, kg, key){
+  try { const j = await fetchCost(id, kg); if (live.key !== key) return; if (j.cost == null) throw new Error("no REG"); live.cost = j.cost; live.etd = j.etd || "–"; }
+  catch(e){ if (live.key === key) live.err = true; }
+  if (live.key === key) calc();
+}
+function makeAC(input, box, onPick){
+  let timer = null, seq = 0, items = [];
+  input.addEventListener("input", () => { clearTimeout(timer); onPick(null); const q = input.value.trim();
+    if (q.length < 3) { box.innerHTML = ""; return; } box.innerHTML = "<p>Mencari…</p>";
+    timer = setTimeout(async () => { const my = ++seq;
+      try { const j = await api("destination?q=" + encodeURIComponent(q)); if (my !== seq) return; items = j.data || [];
+        box.innerHTML = items.length ? items.map((d,i) => `<button type="button" role="option" data-i="${i}">${esc(d.label)}</button>`).join("") : "<p>Tidak ditemukan. Coba nama kecamatan atau kode pos.</p>"; }
+      catch(e){ if (my === seq) box.innerHTML = "<p>Gagal memuat. Coba lagi sebentar.</p>"; } }, 350); });
+  box.addEventListener("click", e => { const b = e.target.closest("[data-i]"); if (!b) return; const d = items[+b.dataset.i]; input.value = d.label; box.innerHTML = ""; onPick(d); });
+  document.addEventListener("click", e => { if (!box.contains(e.target) && e.target !== input) box.innerHTML = ""; });
+}
+makeAC($("destQ"), $("sug"), d => { live.dest = d; live.key = ""; calc(); });
+let lcDest = null;
+async function lcRun(){ const n = +$("lcN").value, kg = Math.max(1, Math.ceil(n*KG_PER_BOTTLE + PACK_KG));
+  if (!lcDest) { $("lcRes").innerHTML = "<small>JNE REG dari Surabaya</small>–"; return; }
+  $("lcRes").innerHTML = "<small>Menghitung…</small>–";
+  try { const j = await fetchCost(lcDest.id, kg); if (j.cost == null) throw 0; $("lcRes").innerHTML = `<small>${kg} kg · estimasi ${esc(j.etd || "–")}</small>${rp(j.cost)}`; }
+  catch(e){ $("lcRes").innerHTML = "<small>JNE REG tidak tersedia ke tujuan ini</small>–"; } }
+makeAC($("lcQ"), $("lcSug"), d => { lcDest = d; lcRun(); });
+$("lcN").addEventListener("change", lcRun);
+(async () => { try { const j = await api("destination?q=surabaya");
+  if (Array.isArray(j.data)) { LIVE = true; $("liveBox").hidden = false; $("dest").hidden = true; $("liveCheck").hidden = false; calc(); } } catch(e){} })();
+
+const regions = [...new Set(R.map(r => r[1]))];
+$("dest").innerHTML = `<option value="">Pilih kota…</option>` + regions.map(g => `<optgroup label="${g}">${R.map((r,i) => [r,i]).filter(([r]) => r[1] === g).map(([r,i]) => `<option value="${i}">${r[0]}</option>`).join("")}</optgroup>`).join("") + `<option value="x">Kota lain…</option>`;
+$("dest").addEventListener("change", calc);
+
+/* ---------- checkout drawer ---------- */
+let co = {mode: "cart", items: {}, step: 1};
+function buyNow(id, q){ co = {mode: "buy", items: {[id]: q}, step: 2}; renderCO(); openLayer($("co")); }
+function openCheckout(){ co = {mode: "cart", items: cart, step: 1}; renderCO(); openLayer($("co")); }
+function coList(){ return P.filter(p => co.items[p.id]); }
+
+function calc(){
+  const items = coList(), n = items.reduce((a,p) => a + co.items[p.id], 0), sub = items.reduce((a,p) => a + co.items[p.id]*p.price, 0);
+  const w = n ? +(n*KG_PER_BOTTLE + PACK_KG).toFixed(1) : 0, wb = n ? Math.max(1, Math.ceil(w)) : 0;
+  const v = $("dest").value; let r = null, pending = false;
+  if (LIVE) { if (live.dest && n) { const key = live.dest.id + "|" + wb;
+      if (live.key !== key) { live.key = key; live.cost = null; live.err = false; getCost(live.dest.id, wb, key); }
+      if (live.cost != null) r = {name: live.dest.label, ship: live.cost, etd: live.etd}; else pending = !live.err; } }
+  else if (v !== "" && v !== "x") { const s = R[+v]; r = {name: s[0], ship: s[2]*wb, etd: s[3] + " hari"}; }
+  const other = (!LIVE && v === "x") || (LIVE && live.err), ship = r && n ? r.ship : 0;
+  $("w").textContent = n ? `${w.toLocaleString("id-ID")} kg / ${wb} kg` : "–";
+  $("etd").textContent = r ? r.etd : "–"; $("sub").textContent = rp(sub);
+  $("ship").textContent = r && n ? rp(ship) : pending ? "menghitung…" : other && n ? "dikonfirmasi" : "–";
+  $("other").hidden = !other;
+  $("tot").textContent = rp(sub + (co.step > 1 ? ship : 0));
+  return {items, n, sub, r, wb, ship, other, pre: items.some(p => !p.stock)};
+}
+
+function renderCO(){
+  const items = coList();
+  $("coTitle").textContent = co.mode === "buy" ? "Beli sekarang" : "Tas belanja";
+  $("coSteps").querySelectorAll("span").forEach((s,i) => { s.className = i+1 === co.step ? "on" : i+1 < co.step ? "ok" : ""; });
+  ["s1","s2","s3"].forEach((s,i) => $(s).hidden = i+1 !== co.step);
+  $("coItems").innerHTML = items.length ? items.map(p => `<div class="it"><img src="${p.img}" alt="">
+    <div><div class="n">${p.brand} ${p.name}</div><div class="p">${rp(p.price)}</div>${p.stock ? "" : `<span class="pre">Pre-order</span>`}
+    <div><div class="qty"><button type="button" data-cdec="${p.id}" aria-label="Kurangi">−</button><span>${co.items[p.id]}</span><button type="button" data-cinc="${p.id}" aria-label="Tambah">+</button></div></div></div>
+    <span class="sum">${rp(p.price*co.items[p.id])}</span></div>`).join("") : `<p class="empty">Tas belanjamu masih kosong.<br><a href="#koleksi" data-close-link>Pilih parfum dari koleksi</a></p>`;
+  $("err").textContent = "";
+  $("coBack").hidden = co.step === 1 || co.step === 3 || (co.mode === "buy" && co.step === 2 && false);
+  $("coFoot").hidden = co.step === 3;
+  const c = calc();
+  $("coNext").textContent = co.step === 1 ? "Lanjut ke pengiriman" : c.pre ? "Kirim pre-order" : "Lanjut ke pembayaran";
+  $("coNext").disabled = !items.length;
+  if (co.step === 2 && co.mode === "buy") $("coBack").hidden = false;
+}
+$("coItems").addEventListener("click", e => { const t = e.target.closest("[data-cinc],[data-cdec]"); if (!t) return;
+  const id = +(t.dataset.cinc || t.dataset.cdec); co.items[id] = t.dataset.cinc ? co.items[id] + 1 : co.items[id] - 1;
+  if (co.items[id] <= 0) delete co.items[id]; refreshBag(); renderCO(); });
+document.addEventListener("click", e => { if (e.target.closest("[data-close-link]")) closeLayer(); });
+$("coBack").addEventListener("click", () => { co.step = 1; renderCO(); });
+$("coNext").addEventListener("click", () => {
+  if (co.step === 1) { co.step = 2; renderCO(); $("nama").focus(); return; }
+  const c = calc(), f = id => $(id).value.trim(), miss = [];
+  if (!f("nama")) miss.push("nama");
+  if (!/^(\+?62|0)8\d{7,12}$/.test(f("hp").replace(/[\s-]/g, ""))) miss.push("no. HP yang valid");
+  if (f("alamat").length < 10) miss.push("alamat lengkap");
+  if (LIVE ? !live.dest : !$("dest").value) miss.push("kota tujuan");
+  if (miss.length) { $("err").textContent = "Lengkapi dulu: " + miss.join(", ") + "."; return; }
+  if (LIVE && live.dest && live.cost == null && !live.err) { $("err").textContent = "Tunggu sebentar, ongkir sedang dihitung."; return; }
+  makeOrder(c);
+});
+
+let lastOrder = "", timerId = null;
+function makeOrder(c){
+  const f = id => $(id).value.trim(), d = new Date();
+  const id = "KAI-" + d.toISOString().slice(2,10).replace(/-/g,"") + "-" + (Math.floor(Math.random()*9000) + 1000);
+  const city = c.r ? c.r.name : LIVE && live.dest ? live.dest.label : "Kota lain (mohon cek ongkir)";
+  const total = c.sub + c.ship;
+  lastOrder = [ `Halo Kai Parfum Store, saya mau ${c.pre ? "PRE-ORDER" : "pesan"}.`, `No. pesanan: ${id}`, ``,
+    ...c.items.map(p => `• ${p.brand} ${p.name} x${co.items[p.id]} = ${rp(p.price*co.items[p.id])}${p.stock ? "" : " (pre-order)"}`), ``,
+    `Subtotal: ${rp(c.sub)}`, c.r ? `Ongkir JNE REG ke ${city} (${c.wb} kg, est. ${c.r.etd}): ${rp(c.ship)}` : `Ongkir JNE REG: mohon dikonfirmasi`,
+    `Total: ${rp(total)}${c.r ? "" : " + ongkir"}`, `Pembayaran: QRIS`, ``,
+    `Penerima: ${f("nama")}`, `HP: ${f("hp")}`, `Alamat: ${f("alamat")}, ${city}${f("pos") ? " " + f("pos") : ""}`, f("cat") ? `Catatan: ${f("cat")}` : "" ].join("\n").trim();
+  co.step = 3; renderCO();
+  if (c.pre) {
+    lastOrder += `\n\nMohon konfirmasi ketersediaan stok sebelum saya bayar.`;
+    $("s3").innerHTML = `<h3 style="font-size:30px;margin-top:16px">Pre-order ${id}</h3>
+      <p class="note">Ada parfum yang stoknya sedang habis. Kirim pre-order ini ke WhatsApp kami; kami konfirmasi ketersediaan dan baru setelah itu kamu bayar.</p>
+      <pre class="ord">${esc(lastOrder)}</pre><div class="btns"><button class="btn gold" type="button" id="sendWA">Kirim pre-order via WhatsApp</button><button class="btn line" type="button" id="copyOrder">Salin rincian</button></div><p class="note" id="waMsg" role="status"></p>`;
+    return;
+  }
+  lastOrder += `\n\nSaya sudah membayar via QRIS, bukti bayar saya lampirkan.`;
+  startPayment({id, total, known: !!c.r});
+}
+
+/* Pembayaran. Saat Midtrans siap, ganti isi startPayment dengan memanggil fungsi server
+   (mis. /api/create-transaction) yang membuat token Snap memakai Server Key Midtrans,
+   lalu window.snap.pay(token, {...}). Jangan taruh Server Key di halaman ini. */
+function startPayment(o){
+  clearInterval(timerId);
+  $("s3").innerHTML = `<h3 style="font-size:30px;margin-top:16px">Pesanan ${o.id}</h3>
+    <p class="note">Selesaikan pembayaran dalam <span class="timer" id="tm">${PAY_WINDOW_MIN}:00</span></p>
+    <div class="qris"><div class="qbox"><div class="qh"><span>QRIS</span><span>Kai Parfum Store</span></div>${qrSvg(o.id)}<span class="ribbon">CONTOH</span><small>Tampilan contoh · belum bisa dipakai bayar</small></div>
+      <div><span class="note" style="margin:0">Total bayar</span><div class="amt">${rp(o.total)}</div>${o.known ? "" : `<p class="note">+ ongkir yang akan kami konfirmasi.</p>`}
+      <p class="note">Scan dengan GoPay, OVO, DANA, ShopeePay, LinkAja, atau m-banking. Nominal harus sama persis.</p></div></div>
+    <pre class="ord">${esc(lastOrder)}</pre>
+    <div class="btns"><button class="btn gold" type="button" id="sendWA">Saya sudah bayar · konfirmasi via WhatsApp</button><button class="btn line" type="button" id="copyOrder">Salin rincian</button></div>
+    <p class="note" id="waMsg" role="status"></p>`;
+  const end = Date.now() + PAY_WINDOW_MIN*60000;
+  timerId = setInterval(() => { const s = Math.max(0, Math.round((end - Date.now())/1000)), el = $("tm"); if (!el) return clearInterval(timerId);
+    el.textContent = s ? `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}` : "waktu habis, buat pesanan ulang"; if (!s) clearInterval(timerId); }, 1000);
+}
+$("s3").addEventListener("click", e => {
+  if (e.target.closest("#sendWA")) { const a = document.createElement("a"); a.href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(lastOrder)}`; a.target = "_blank"; a.rel = "noopener"; a.click();
+    if (co.mode === "cart") { for (const k in cart) delete cart[k]; refreshBag(); } $("waMsg").textContent = "Membuka WhatsApp… Terima kasih sudah berbelanja!"; }
+  if (e.target.closest("#copyOrder")) navigator.clipboard.writeText(lastOrder).then(() => $("waMsg").textContent = "Rincian pesanan tersalin.").catch(() => $("waMsg").textContent = "Salin manual teks di atas.");
+});
+function qrSvg(seed){ const N = 25; let h = 0; for (const ch of seed) h = (h*31 + ch.charCodeAt(0)) >>> 0;
+  const rnd = () => (h = (h*1103515245 + 12345) >>> 0, (h >>> 16) & 1);
+  const inF = (x,y) => [[0,0],[N-7,0],[0,N-7]].some(([a,b]) => x >= a-1 && x < a+8 && y >= b-1 && y < b+8);
+  let m = ""; for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) if (!inF(x,y) && rnd()) m += `M${x} ${y}h1v1h-1z`;
+  const f = ([a,b]) => `<rect x="${a}" y="${b}" width="7" height="7" fill="#111"/><rect x="${a+1}" y="${b+1}" width="5" height="5" fill="#fff"/><rect x="${a+2}" y="${b+2}" width="3" height="3" fill="#111"/>`;
+  return `<svg viewBox="-1 -1 ${N+2} ${N+2}" role="img" aria-label="Contoh kode QRIS"><path d="${m}" fill="#111"/>${[[0,0],[N-7,0],[0,N-7]].map(f).join("")}</svg>`; }
+
+/* ---------- tarif page + routing ---------- */
+let region = "Semua"; const sorted = [...R].sort((a,b) => a[2] - b[2]);
+$("tStats").innerHTML = `<div><b>${rp(sorted[0][2])}</b>Termurah per kg (Jawa Timur)</div><div><b>${R.length} kota</b>Tarif acuan</div><div><b>1–2 hari</b>Ke kota besar di Pulau Jawa</div>`;
+$("rchips").innerHTML = ["Semua", ...regions].map(g => `<button type="button" data-region="${g}" aria-pressed="${g===region}">${g}</button>`).join("");
+$("rchips").addEventListener("click", e => { const b = e.target.closest("[data-region]"); if (!b) return; region = b.dataset.region; $("rchips").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); table(); });
+function table(){ const q = $("q").value.trim().toLowerCase();
+  const rows = R.filter(r => (region === "Semua" || r[1] === region) && (!q || (r[0] + " " + r[1]).toLowerCase().includes(q)));
+  $("tb").innerHTML = rows.length ? rows.map(r => `<tr class="${r[2] <= 10000 ? "cheap" : ""}"><td>${r[0]}</td><td>${r[1]}</td><td class="n">${rp(r[2])}</td><td class="n">${r[3]} hari</td><td class="n">${rp(r[2]*2)}</td></tr>`).join("")
+    : `<tr><td colspan="5">Belum ada di daftar. Cek di <a href="https://www.jne.co.id/shipping-fee" target="_blank" rel="noopener">jne.co.id</a> atau tanyakan via WhatsApp.</td></tr>`; }
+$("q").addEventListener("input", table);
+function route(){ const t = location.hash === "#tarif-jne"; $("home").hidden = t; $("tarifPage").hidden = !t;
+  if (t) { window.scrollTo(0,0); document.title = "Tarif JNE Regular · Kai Parfum Store"; }
+  else { document.title = "Kai Parfum Store"; const el = location.hash.length > 1 && document.querySelector(location.hash); if (el) el.scrollIntoView(); } }
+window.addEventListener("hashchange", route);
+document.addEventListener("click", e => { const a = e.target.closest('a[href^="#"]'); if (a && a.getAttribute("href") === location.hash) { e.preventDefault(); route(); } });
+
+renderGrid(); table(); refreshBag(); route(); observeReveal();
+setTimeout(() => document.querySelectorAll(".reveal").forEach(el => el.classList.add("in")), 1800);
+}
+</script>
+</body>
+</html>
