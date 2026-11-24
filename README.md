@@ -50,5 +50,6 @@ di `index.html` sudah diberi catatan cara menggantinya dengan Midtrans Snap. Ser
 Midtrans harus disimpan sebagai environment variable dan dipakai di fungsi server baru
 (misalnya `netlify/functions/create-transaction.mjs`), jangan ditulis di `index.html`.
 Update: pasang API key ongkir
+Fix nama variabel
 
 
