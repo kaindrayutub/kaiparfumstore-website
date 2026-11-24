@@ -49,3 +49,6 @@ Pembayaran saat ini masih **contoh QRIS** (diberi tanda "CONTOH"). Fungsi `start
 di `index.html` sudah diberi catatan cara menggantinya dengan Midtrans Snap. Server Key
 Midtrans harus disimpan sebagai environment variable dan dipakai di fungsi server baru
 (misalnya `netlify/functions/create-transaction.mjs`), jangan ditulis di `index.html`.
+Update: pasang API key ongkir
+
+
