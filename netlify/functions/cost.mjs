@@ -33,7 +33,7 @@ export default async (req) => {
 
     const services = j.data || [];
     // JNE Regular biasanya bernama "REG" (kadang dengan akhiran, mis. "REG23").
-    const reg = services.find((s) => /^REG/i.test(s.service || "")) || null;
+    const reg = services.find((s) => /^REG/i.test(s.service || "")) || services.find((s) => /^CTC$/i.test(s.service || "")) || null;
     if (!reg) return json({ cost: null, error: "JNE REG tidak tersedia ke tujuan ini", services: services.map((s) => s.service) }, 404);
 
     return json({ service: reg.service, cost: reg.cost, etd: reg.etd ? `${reg.etd}`.replace(/day/i, "hari") : "" });
