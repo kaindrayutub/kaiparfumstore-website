@@ -51,6 +51,7 @@ Midtrans harus disimpan sebagai environment variable dan dipakai di fungsi serve
 (misalnya `netlify/functions/create-transaction.mjs`), jangan ditulis di `index.html`.
 Update: pasang API key ongkir
 Fix nama variabel
+Tambah ORIGIN_ID
 
 
 
